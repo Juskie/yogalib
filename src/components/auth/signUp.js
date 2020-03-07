@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import firebase, { auth } from "firebase";
 import base, {firebaseApp} from "../../config/base";
 
+
+//S'inscrire
 class SignUp extends Component {
 
     state = {

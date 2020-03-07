@@ -1,17 +1,19 @@
-//
-// import firebase from 'firebase/app'
-// import 'firebase/database'
-//
-// const firebaseApp = firebase.initializeApp({
-//     apiKey: "AIzaSyCl95pHKzYbwIO2QQAwZzoUoUCQxDdzYxY",
-//     authDomain: "yogalib-developpement.firebaseapp.com",
-//     databaseURL: "https://yogalib-developpement.firebaseio.com",
-// });
-//
-// const base = Rebase.createClass(firebaseApp.database());
-//
-// // This is a named export
-// export { firebaseApp }
-//
-// // this is a default export
-// export default base
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
+
+const firebaseApp = firebase.initializeApp({
+    apiKey: "AIzaSyCl95pHKzYbwIO2QQAwZzoUoUCQxDdzYxY",
+    authDomain: "yogalib-developpement.firebaseapp.com",
+    databaseURL: "https://yogalib-developpement.firebaseio.com",
+    projectId: "yogalib-developpement",
+    storageBucket: "yogalib-developpement.appspot.com",
+    messagingSenderId: "625633703061",
+    appId: "1:625633703061:web:4bc17c1d2aae489ab3979c",
+    measurementId: "G-720R56BDYY"
+});
+
+firebaseApp.firestore();
+
+export default firebaseApp;
+
