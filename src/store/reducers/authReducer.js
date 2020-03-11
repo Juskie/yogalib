@@ -3,6 +3,7 @@ const initialState = {
 };
 
 const authReducer = (state = initialState, action) => {
+    // eslint-disable-next-line default-case
     switch (action.type) {
         case 'LOGIN_ERROR':
             console.log('login error');
@@ -15,7 +16,10 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authError: null
-            }
+            };
+        case 'SIGNOUT_SUCCES':
+            console.log('Sign Out Success !');
+            return state;
     }
     return state;
 };

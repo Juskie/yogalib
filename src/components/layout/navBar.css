@@ -1,0 +1,32 @@
+.header {
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.16);
+    color: #718792;
+    font-family: 'Open Sans SemiBold', sans-serif;
+    font-size: 14px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.nav a {
+    color: inherit;
+}
+
+.nav a:hover {
+    color: #F26A4B;
+}
+
+
+.nav__link {
+    display: flex;
+    color: #718792;
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {signIn} from "../../store/actions/authActions";
+import './signIn.css';
 
 //Se connecter
 class SignIn extends Component {
@@ -22,15 +23,15 @@ class SignIn extends Component {
 
         this.props.signIn(this.state);
 
-        // const form = {...this.state};
+        const form = {...this.state};
 
-        // //Reset Form
-        // Object.keys(form).forEach(input => {
-        //     form[input] = ''
-        // });
-        // this.setState({
-        //     ...form
-        // })
+        //Reset Form
+        Object.keys(form).forEach(input => {
+            form[input] = ''
+        });
+        this.setState({
+            ...form
+        })
 
     };
 
@@ -40,20 +41,19 @@ class SignIn extends Component {
         const { authError } = this.props;
 
         return (
-            <div>
-                <form className="simple-form" onSubmit={this.handleSubmit}>
+            <div className="container">
+                <form className="form" onSubmit={this.handleSubmit}>
                     <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Email"
                            name="email" required/>
                     <input value={this.state.password} onChange={this.handleChange} type="password"
                            placeholder="Password" name="password" required/>
-                    <button className="button-form" type="submit">Se connecter</button>
+                    <button className="" type="submit">Se connecter</button>
                     <div>
                         { authError ? <p>{authError}</p> : null}
                     </div>
+                    <p>Mot de passe oublié ?</p>
                 </form>
             </div>
-
-
         );
     }
 }
