@@ -1,5 +1,5 @@
 # Yogalib 
-Création d'un répertoire en ligne répertoriant les professeurs de yoga à Paris, et permettant de faire des recherches de remplacements.
+Création d'un annuaire en ligne répertoriant les professeurs de yoga à Paris, et permettant de faire des recherches de remplacements.
 
 ## :computer: Technologies 
 - React.js
