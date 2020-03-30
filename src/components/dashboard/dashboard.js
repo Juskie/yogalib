@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Notifications from "./notifications";
+import DashboardProf from "./dashboardProf";
+import './dashboard.scss';
 import {connect} from 'react-redux';
 
 
@@ -10,9 +11,7 @@ class Dashboard extends Component {
             <div className="">
                 <div className="">
                     <div className="">
-                    </div>
-                    <div className="">
-                        <Notifications/>
+                        <DashboardProf profile={this.props.profile}/>
                     </div>
                 </div>
             </div>
@@ -20,4 +19,10 @@ class Dashboard extends Component {
     }
 }
 
-export default connect()(Dashboard);
+const mapStateToProps = state => {
+    return {
+        profile: state.firebase.profile,
+    }
+};
+
+export default connect(mapStateToProps)(Dashboard);

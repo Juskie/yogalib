@@ -24,11 +24,20 @@ const store = createStore(
     )
 );
 
+
+const rrfConfig = {
+    userProfile: 'profs',
+    useFirestoreForProfile: true,
+    // attachAuthIsReady: true
+};
+
 const rrfProps = {
     firebase,
-    config: firebaseApp,
+    config: rrfConfig,
     dispatch: store.dispatch,
-    createFirestoreInstance
+    createFirestoreInstance,
+    presence: 'presence',
+    sessions:'sessions'
 };
 
 function AuthIsLoaded({children}) {

@@ -1,18 +1,20 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
-import './navBar.css';
+import './navBar.scss';
 
 import SignedInLinks from "./signedInLinks";
 import SignedOutLinks from "./signedOutLinks";
 
 const NavBar = (props) => {
-    const {auth} = props;
+    const {auth, profile} = props;
     console.log(auth);
+    console.log(profile);
 
     let clickLogo = auth.uid ? '/dashboard' : '/';
 
     const links = auth.uid ? <SignedInLinks/> : <SignedOutLinks/>;
+
     return (
         <header className="header">
             <nav className="nav">
@@ -26,7 +28,8 @@ const NavBar = (props) => {
 const mapStateToProps = state => {
     console.log(state);
     return {
-        auth: state.firebase.auth
+        auth: state.firebase.auth,
+        profile: state.firebase.profile
     }
 };
 

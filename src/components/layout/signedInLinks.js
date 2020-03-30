@@ -8,7 +8,6 @@ const SignedInLinks = (props) => {
         <ul className="nav__link">
             <li><NavLink to='/'>Planning</NavLink></li>
             <li><a onClick={props.signOut}>Se déconnecter</a></li>
-            <li><NavLink to='/' className="">CM</NavLink></li>
         </ul>
     );
 };

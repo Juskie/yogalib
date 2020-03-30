@@ -13,7 +13,7 @@ const firebaseApp = firebase.initializeApp({
     measurementId: "G-720R56BDYY"
 });
 
-firebaseApp.firestore();
+firebaseApp.firestore().settings({});
 
 export default firebaseApp;
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {signIn} from "../../store/actions/authActions";
-import './signIn.css';
+import './signForm.scss';
 
 //Se connecter
 class SignIn extends Component {
@@ -24,41 +24,43 @@ class SignIn extends Component {
 
         this.props.signIn(this.state);
 
-        const form = {...this.state};
+        // const form = {...this.state};
 
         //Reset Form
-        Object.keys(form).forEach(input => {
-            form[input] = ''
-        });
-        this.setState({
-            ...form
-        })
+        // Object.keys(form).forEach(input => {
+        //     form[input] = ''
+        // });
+        // this.setState({
+        //     ...form
+        // })
 
     };
 
 
     render() {
 
-        const { authError, auth } = this.props;
+        const {authError, auth} = this.props;
 
         if (auth.uid) {
             return <Redirect to='/dashboard'/>
         }
 
         return (
-            <div className="container">
-                <form className="form" onSubmit={this.handleSubmit}>
-                    <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Email"
-                           name="email" required/>
-                    <input value={this.state.password} onChange={this.handleChange} type="password"
-                           placeholder="Password" name="password" required/>
-                    <button className="" type="submit">Se connecter</button>
-                    <div>
-                        { authError ? <p>{authError}</p> : null}
-                    </div>
-                    <p>Mot de passe oublié ?</p>
-                </form>
-            </div>
+            <>
+                <section className="container">
+                    <form className="form" onSubmit={this.handleSubmit}>
+                        <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Email"
+                               name="email" required/>
+                        <input value={this.state.password} onChange={this.handleChange} type="password"
+                               placeholder="Password" name="password" required/>
+                        <button className="button-primary" type="submit">Se connecter</button>
+                        <div>
+                            {authError ? <p>{authError}</p> : null}
+                        </div>
+                        <p>Mot de passe oublié ?</p>
+                    </form>
+                </section>
+            </>
         );
     }
 }
