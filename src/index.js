@@ -24,9 +24,8 @@ const store = createStore(
     )
 );
 
-
 const rrfConfig = {
-    userProfile: 'profs',
+    userProfile: 'users',
     useFirestoreForProfile: true,
     // attachAuthIsReady: true
 };
