@@ -11,7 +11,6 @@ class DashboardProf extends Component {
                 <section>
                     <h2>Bienvenue,</h2>
                     <h1>{profile.firstName}</h1>
-                    <button>Faire une recherche de remplacement</button>
                 </section>
                 <section>
 

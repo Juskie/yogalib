@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
-import firstFormProf from './firstFormProf';
-import firstFormStudio from './firstFormStudio';
+import FirstFormProf from "./firstFormProf";
+import FirstFormStudio from "./firstFormStudio";
+import './firstForm.scss';
 
 const FirstAuthentication = (props) => {
 
-    const firstForm = props.profile.role === 'teacher' ? <firstFormProf/> : <firstFormStudio/>;
+    const firstForm = props.profile.role === 'teacher' ? <FirstFormProf/> : <FirstFormStudio/>;
 
     return (
         <div>

@@ -14,7 +14,9 @@ class SignUp extends Component {
         firstName: '',
         lastName: '',
         email: '',
+        phone:'',
         password: '',
+        confirmPassword:''
     };
 
     handleChange = event => {
@@ -27,7 +29,14 @@ class SignUp extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.signUp(this.state); //envoi les informations du nouvel user
+
+        const {password, confirmPassword} = this.state;
+
+        if (password !== confirmPassword) {
+            alert('Ta mère')
+        } else {
+            this.props.signUp(this.state);//send informations for the new user
+        }
 
         // const form = {...this.state};
 
@@ -58,10 +67,15 @@ class SignUp extends Component {
                                placeholder="Prénom" name="firstName" required/>
                         <input value={this.state.lastName} onChange={this.handleChange} type="text" placeholder="Nom"
                                name="lastName" required/>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Email"
+                        <input value={this.state.phone} onChange={this.handleChange} type="text" placeholder="Téléphone"
+                               name="phone" required/>
+                        <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Adresse Email"
                                name="email" required/>
                         <input value={this.state.password} onChange={this.handleChange} type="password"
-                               placeholder="Password" name="password" required/>
+                               placeholder="Mot de Passe" name="password" required/>
+                        <p>Minimum 6 caractères</p>
+                        <input value={this.state.confirmPassword} onChange={this.handleChange} type="password"
+                               placeholder="Confirmer le Mot de Passe" name="confirmPassword" required/>
                         <button className="button-primary" type="submit">S'enregistrer</button>
                         <div>
                             {authError ? <p>{authError}</p> : null}

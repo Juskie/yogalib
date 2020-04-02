@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import {getFirebase} from "react-redux-firebase";
-import {getFirestore} from "redux-firestore";
+
 
 export const signIn = credentials => {
   return (dispatch) => {
@@ -36,7 +35,8 @@ export const signUp = newUser => {
             return firestore.collection('users').doc(resp.user.uid).set({
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
-                role: 'teacher'
+                role: 'teacher',
+                phone: newUser.phone
             })
         }).then( () => {
             dispatch({ type: 'SIGNUP_SUCCESS'});
