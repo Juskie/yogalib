@@ -1,4 +1,11 @@
 @import '../../sass/variables';
+.dashboard-studio {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
 
 .section-welcome {
   background-color: $middle-primary;
@@ -34,13 +41,4 @@
   button {
     padding: 0.8rem 1rem;
   }
-}
-
-.dashboard-studio {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  justify-items: center;
-  align-items: center;
-
 }

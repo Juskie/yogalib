@@ -1,39 +1,44 @@
 @import '../../sass/variables';
 
-
-$color-selected: #2aa1c0;
-$color-box: #ccc;
-$color-grey: lighten(#000, 40);
-$lightergrey-color: #e6e6e6;
-
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: $color-fonts;
   //transform: translateY(50%);
-  min-height: 80vh;
+  //min-height: 80vh;
 }
 
-.form {
-  width: 20vw;
+.form-prof {
+  display: grid;
+  grid-template-columns: 15vw 15vw 15vw;
+  //grid-template-rows: 1fr 10vw 3vw;
+  grid-column-gap: 2rem;
+  //align-items: stretch;
   background-color: #FFFFFF;
-  padding: 4rem;
+  padding: 2rem;
   border-radius: 10px;
   border: 1px solid $border-color;
   max-width: 50%;
   font-size: 0.9rem;
 
-  input {
-    margin-bottom: 2rem;
+  h2 {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    font-size: 1.5rem;
+  }
+
+  input, textarea {
     border-radius: 10px;
     border: 0.1em solid $border-color;
-    padding: 15px 25px;
+    padding: 10px 20px;
     box-shadow: inset 0 .0625em .125em rgba(10, 10, 10, .05);
     background-color: $light-grey;
 
     &:hover {
       border: 0.1em solid $dark-primary;
       transition: 0.2s;
+    }
+
+    &:focus {
+      border: 0.1em solid $dark-primary;
     }
   }
 
@@ -45,56 +50,30 @@ $lightergrey-color: #e6e6e6;
   }
 
   button {
-    padding: 15px 25px;
+    padding: 10px 20px;
+    margin-top: 2rem;
     font-size: 14px;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 3;
   }
 
   label {
-
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   textarea {
 
   }
 
-  select {
-    display: inline-block;
-    width: 100%;
-    cursor: pointer;
-    padding: 10px 35px 10px 15px;
-    outline: 0;
-    border: 0;
-    border-radius: 0;
-    background: $lightergrey-color;
-    color: $color-grey;
-    appearance: none;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
 
-    &::-ms-expand {
-      display: none; // pour IE
-    }
-    &:hover,
-    &:focus {
-      background: lighten($lightergrey-color, 2%);
-    }
-    &:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-  }
-  // Skin mark
-  &:after {
-    content: "\25BC";
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 70%;
-    width: 30px;
-    text-align: center;
-    padding-top: 12px;
-    padding-bottom: 10px;
-    pointer-events: none;
-    color: $color-grey;
-  }
-
+.container-form {
+  display: flex;
+  flex-direction: column;
+  //margin-bottom: 10px;
+  grid-row-start: 2;
+  grid-row-end: 2;
 }

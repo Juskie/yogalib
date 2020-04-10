@@ -6,13 +6,13 @@ export const addFirstUserInformations = (informations) => {
 
         firestore.collection('users').doc(userId).update({
             ...informations,
-            yogaStyle: '',
-            experience: '',
-            language: '',
-            instagram: '',
-            facebook: '',
-            website: '',
-            presentation: ''
+            yogaStyle: informations.yogaStyle,
+            experience: informations.experience,
+            language: informations.language,
+            instagram: informations.instagram,
+            facebook: informations.facebook,
+            website: informations.website,
+            presentation: informations.presentation
         }).then(() => {
             dispatch({type: 'ADD_FIRST_USER_INFORMATIONS', informations});
         }).catch((err) => {

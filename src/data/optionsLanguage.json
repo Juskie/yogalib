@@ -1,0 +1,16 @@
+{
+  "optionsLanguage"
+  : [
+  {
+    "label": "Français",
+    "value": "french"
+  },
+  {
+    "label": "English",
+    "value": "english"
+  },
+  {
+    "label": "Deutsch",
+    "value": "deutsch"
+  }
+]}
