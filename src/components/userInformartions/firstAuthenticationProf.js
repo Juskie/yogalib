@@ -40,7 +40,6 @@ class FirstAuthenticationProf extends Component {
         this.setState({
             [input]: value
         });
-        console.log(value);
     };
 
     handleSubmit = event => {
