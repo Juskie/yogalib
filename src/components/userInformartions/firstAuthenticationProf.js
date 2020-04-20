@@ -4,27 +4,35 @@ import Select from 'react-select';
 import YogaStyles from '../../data/yogaStyles';
 import OptionsExperience from '../../data/optionsExperience';
 import OptionsLanguage from '../../data/optionsLanguage';
+import RequiredInput from "./requiredInput";
 import './firstForm.scss';
+import Uploader from "./imageDownload";
 
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 
+
 class FirstAuthenticationProf extends Component {
 
     state = {
-        yogaStyle: '',
-        experience: '',
-        language: '',
+        yogaStyle: [],
+        experience: [],
+        language: {
+            "label": "Français",
+            "value": "french"
+        },
         instagram: '',
         facebook: '',
         website: '',
         presentation: '',
-        redirect: false
+        image:'',
+        redirect: false,
+        error: null
     };
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to='/dashboard' />
+            return <Redirect to='/dashboard'/>
         }
     };
 
@@ -40,6 +48,16 @@ class FirstAuthenticationProf extends Component {
         this.setState({
             [input]: value
         });
+
+        if (value === null || value.length <= 0) {
+            console.log('je maffiche !');
+            this.setState({
+                error: 'Veuillez remplir les champs obligatoires pour valider le formulaire.'
+            })
+        }
+
+        console.log(input);
+        console.log(value);
     };
 
     handleSubmit = event => {
@@ -70,7 +88,6 @@ class FirstAuthenticationProf extends Component {
                                     onChange={(value) => this.handleChangeMulti('yogaStyle', value)}
                                     options={optionsStyle}
                                     isMulti
-                                    required
                                 />
                             </div>
                             <label>Années d'enseignement</label>
@@ -78,7 +95,6 @@ class FirstAuthenticationProf extends Component {
                                 value={this.state.experience}
                                 onChange={(value) => this.handleChangeMulti('experience', value)}
                                 options={optionsExperience}
-                                required
                             />
                             <label>Langue(s) parlée(s)</label>
                             <Select
@@ -86,27 +102,31 @@ class FirstAuthenticationProf extends Component {
                                 onChange={(value) => this.handleChangeMulti('language', value)}
                                 options={optionsLanguage}
                                 isMulti
-                                required
-                                // defaultValue={}
                             />
                         </div>
                         <div className="container-form">
                             <label>Instagram</label>
                             <input value={this.state.instagram} onChange={this.handleChange} type="text"
-                                   name="instagram" />
+                                   name="instagram"/>
                             <label>Facebook</label>
                             <input value={this.state.facebook} onChange={this.handleChange} type="text"
-                                   name="facebook" />
+                                   name="facebook"/>
                             <label>Website</label>
                             <input value={this.state.website} onChange={this.handleChange} type="text"
                                    name="website"/>
                         </div>
                         <div className="container-form">
                             <label>Descriptif</label>
-                        <textarea value={this.state.presentation} onChange={this.handleChange}
-                                  name="presentation"/>
+                            <textarea value={this.state.presentation} onChange={this.handleChange}
+                                      name="presentation"/>
                         </div>
+                        <input type="file"
+                               name="image"
+                               accept="image/png, image/jpeg"
+                               value={this.state.image} />
+                               <Uploader/>
                         {this.renderRedirect()}
+                        {this.state.error}
                         <button className="button-primary" type="submit">Valider</button>
                     </form>
                 </section>
@@ -117,7 +137,7 @@ class FirstAuthenticationProf extends Component {
 
 const mapStateToProps = state => {
     return {
-        profile: state.firebase.profile,
+        profile: state.firebase.profile
     }
 };
 

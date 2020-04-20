@@ -6,6 +6,13 @@ import {signUp} from '../../store/actions/authActions';
 import './signForm.scss';
 import {Redirect} from "react-router-dom";
 
+const validFormRegex = {
+    firstName: '',
+    lastName: '',
+    email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+    password: '',
+    telephone: (/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/g)
+};
 
 //S'inscrire
 class SignUp extends Component {
@@ -14,9 +21,15 @@ class SignUp extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        phone:'',
+        phone: '',
         password: '',
-        confirmPassword:''
+        confirmPassword: '',
+        error: ''
+    };
+
+    validate = (field) => {
+        // let input = !validTel.test(field) ? this.setState({error: 'invalid'}) : '';
+        console.log(field);
     };
 
     handleChange = event => {
@@ -25,6 +38,8 @@ class SignUp extends Component {
         this.setState({
             [name]: value
         });
+
+        this.validate(value);
     };
 
     handleSubmit = event => {
@@ -37,7 +52,6 @@ class SignUp extends Component {
         } else {
             this.props.signUp(this.state);//send informations for the new user
         }
-
         // const form = {...this.state};
 
         //Reset Form
@@ -69,7 +83,9 @@ class SignUp extends Component {
                                name="lastName" required/>
                         <input value={this.state.phone} onChange={this.handleChange} type="text" placeholder="Téléphone"
                                name="phone" required/>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Adresse Email"
+                        {this.state.error ? this.state.error : ''}
+                        <input value={this.state.email} onChange={this.handleChange} type="email"
+                               placeholder="Adresse Email"
                                name="email" required/>
                         <input value={this.state.password} onChange={this.handleChange} type="password"
                                placeholder="Mot de Passe" name="password" required/>

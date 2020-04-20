@@ -17,3 +17,5 @@ firebaseApp.firestore().settings({});
 
 export default firebaseApp;
 
+export const storage = firebase.storage();
+

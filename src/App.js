@@ -9,6 +9,7 @@ import NavBar from "./components/layout/navBar";
 import SignIn from "./components/auth/signIn";
 import SignUp from "./components/auth/signUp";
 import firstAuthenticationProf from "./components/userInformartions/firstAuthenticationProf";
+import PlanningProf from "./components/planning/planningProf";
 
 
 
@@ -20,6 +21,7 @@ function App() {
                 <Switch>
                     <Route exact path='/' component={Home} />
                     <Route path='/signin' component={SignIn} />
+                    <Route path='/planning' component={PlanningProf} />
                     <PrivateRoute path='/dashboard' component={Dashboard} />
                     <Route path='/signup' component={SignUp} />
                     <Route path='/userInformations' component={firstAuthenticationProf} />
