@@ -7,9 +7,7 @@ import SignedInLinks from "./signedInLinks";
 import SignedOutLinks from "./signedOutLinks";
 
 const NavBar = (props) => {
-    const {auth, profile} = props;
-    console.log(auth);
-    console.log(profile);
+    const {auth} = props;
 
     let clickLogo = auth.uid ? '/dashboard' : '/';
 
@@ -26,7 +24,6 @@ const NavBar = (props) => {
 };
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         auth: state.firebase.auth,
         profile: state.firebase.profile
