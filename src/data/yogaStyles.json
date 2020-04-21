@@ -1,0 +1,16 @@
+{
+  "optionsStyle": [
+    {
+      "label": "Vinyasa",
+      "value": "vinyasa"
+    },
+    {
+      "label": "Hatha",
+      "value": "hatha"
+    },
+    {
+      "label": "Hatha Flow",
+      "value": "hathaFlow"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+@import '../../sass/variables';
+
+.header {
+    padding: 0;
+    margin: 0 0 20px 0;
+    background-color: white;
+    box-shadow: 5px 8.66px 30px 0 rgba(31,35,37,.1);
+    -moz-box-shadow: 5px 8.66px 30px 0 rgba(31,35,37,.1);
+    -webkit-box-shadow: 5px 8.66px 30px 0 rgba(31,35,37,.1);
+    color: $dark-primary;
+    font-family: 'Open Sans SemiBold', sans-serif;
+    font-size: 0.9rem;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    cursor: pointer;
+
+    a {
+        color: inherit;
+    }
+
+    a:hover {
+        color: $primary;
+    }
+
+    .nav__link {
+        display: flex;
+        color: $dark-primary;
+    }
+}
+
+
+
