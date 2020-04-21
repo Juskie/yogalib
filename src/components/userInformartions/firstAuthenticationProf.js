@@ -99,6 +99,8 @@ class FirstAuthenticationProf extends Component {
                 boxShadow: 'inset 0 .0625em .125em rgba(10, 10, 10, .05)',
                 borderColor: '#E2E5E6',
                 borderRadius: 10,
+                padding: '0 5px',
+                text: '10px'
             })
         };
         const multiSelectTheme =
@@ -120,6 +122,7 @@ class FirstAuthenticationProf extends Component {
                             <label>Style(s) de yoga enseigné(s) :</label>
                             <div>
                                 <Select
+                                    placeholder="Choisissez vos options"
                                     value={yogaStyle}
                                     onChange={(value) => this.handleChangeMulti('yogaStyle', value)}
                                     options={optionsStyle}
@@ -130,6 +133,7 @@ class FirstAuthenticationProf extends Component {
                             </div>
                             <label>Années d'enseignement :</label>
                             <Select
+                                placeholder="Choisissez vos options"
                                 value={experience}
                                 onChange={(value) => this.handleChangeMulti('experience', value)}
                                 options={optionsExperience}
@@ -138,6 +142,7 @@ class FirstAuthenticationProf extends Component {
                             />
                             <label>Langue(s) parlée(s) :</label>
                             <Select
+                                placeholder="Choisissez vos options"
                                 value={language}
                                 onChange={(value) => this.handleChangeMulti('language', value)}
                                 options={optionsLanguage}

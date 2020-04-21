@@ -1,0 +1,62 @@
+@import 'sass/variables.scss';
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: $body-background-color;
+    font-family: 'Open Sans', sans-serif;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-family: 'Open Sans SemiBold', sans-serif;
+}
+
+.button-primary {
+    background-color: $primary;
+    color: white;
+
+    &:hover {
+        background-color: $light-primary;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        transition: all 0.2s;
+    }
+
+}
+
+.button-secondary {
+    //transparent et orange
+}
+
+.button-transparent {
+    //transparent et blanc
+}
+
+.button-white {
+    background-color: white;
+    border: 0.1em solid white;
+    color: $middle-primary;
+
+    &:hover {
+        color: white;
+        background-color: $middle-primary;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        transition: all 0.2s;
+    }
+}
