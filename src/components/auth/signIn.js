@@ -40,6 +40,7 @@ class SignIn extends Component {
     render() {
 
         const {authError, auth} = this.props;
+        const {email, password} = this.state;
 
         if (auth.uid) {
             return <Redirect to='/dashboard'/>
@@ -49,15 +50,17 @@ class SignIn extends Component {
             <>
                 <section className="container">
                     <form className="form" onSubmit={this.handleSubmit}>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" placeholder="Email"
+                        <label>E-mail</label>
+                        <input value={email} onChange={this.handleChange} type="email"
                                name="email" required/>
-                        <input value={this.state.password} onChange={this.handleChange} type="password"
-                               placeholder="Password" name="password" required/>
+                        <label>Mot de Passe</label>
+                        <input value={password} onChange={this.handleChange} type="password"
+                               name="password" required/>
                         <button className="button-primary" type="submit">Se connecter</button>
+                        <a href="">Mot de passe oublié ?</a>
                         <div>
                             {authError ? <p>{authError}</p> : null}
                         </div>
-                        <p>Mot de passe oublié ?</p>
                     </form>
                 </section>
             </>

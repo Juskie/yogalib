@@ -26,18 +26,22 @@
 
   input, textarea {
     border-radius: 10px;
-    border: 0.1em solid $border-color;
-    padding: 10px 20px;
-    box-shadow: inset 0 .0625em .125em rgba(10, 10, 10, .05);
-    background-color: $light-grey;
+    border: 0.15em solid transparent;
+    padding: 0.75rem;
+    //box-shadow: inset 0 .0625em .125em rgba(10, 10, 10, .05);
+    background-color: $medium-grey;
+    font-family: inherit;
 
     &:hover {
-      border: 0.1em solid $dark-primary;
-      transition: 0.2s;
+      border: 0.15em solid $primary;
+      transition: 0.5s;
+      background-color: $white;
     }
 
     &:focus {
-      border: 0.1em solid $dark-primary;
+      border: 0.15em solid $primary;
+      background-color: $white;
+      transition: 0.5s;
     }
   }
 
@@ -59,6 +63,7 @@
   }
 
   label {
+    font-family: 'Open Sans SemiBold', sans-serif;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
   }
@@ -68,12 +73,6 @@
     resize : none;
   }
 }
-//.form-prof-select {
-//  background-color: $light-grey;
-//  border-radius: 10px;
-//  border: 0.1em solid $border-color;
-//  box-shadow: inset 0 .0625em .125em rgba(10, 10, 10, .05);
-//}
 
 .container-form {
   display: flex;
@@ -82,4 +81,9 @@
   //margin-bottom: 10px;
   grid-row-start: 2;
   grid-row-end: 2;
+
+  .container-form--icone {
+    height: 1rem;
+    width: auto;
+  }
 }

@@ -4,6 +4,7 @@ import Select from 'react-select';
 import YogaStyles from '../../data/yogaStyles';
 import OptionsExperience from '../../data/optionsExperience';
 import OptionsLanguage from '../../data/optionsLanguage';
+import {ReactComponent as IconeInfo} from "../../images/informations.svg"
 import './firstForm.scss';
 
 import {connect} from "react-redux";
@@ -16,12 +17,9 @@ class FirstAuthenticationProf extends Component {
         redirect: false,
         error: null,
         //userInformations
-        yogaStyle: [],
-        experience: [],
-        language: {
-            "label": "Français",
-            "value": "french"
-        },
+        yogaStyle: '',
+        experience: '',
+        language: '',
         instagram: '',
         facebook: '',
         website: '',
@@ -79,8 +77,6 @@ class FirstAuthenticationProf extends Component {
                 redirect: true
             })
         }
-
-
     };
 
     render() {
@@ -94,13 +90,14 @@ class FirstAuthenticationProf extends Component {
         const multiSelectStyle = {
             control: (styles) => ({
                 ...styles,
-                backgroundColor: '#FAFAFA',
+                backgroundColor: '#f3f3f4',
                 borderSize: 0.5,
                 boxShadow: 'inset 0 .0625em .125em rgba(10, 10, 10, .05)',
-                borderColor: '#E2E5E6',
+                borderColor: 'transparent',
                 borderRadius: 10,
-                padding: '0 5px',
-                text: '10px'
+                padding: '0.25rem 0.75rem',
+                fontSize: '0.8rem',
+                fontFamily: 'inherit',
             })
         };
         const multiSelectTheme =
@@ -109,7 +106,8 @@ class FirstAuthenticationProf extends Component {
                 colors: {
                     ...theme.colors,
                     primary25: 'hsl(0,0%,90%)',
-                    primary: '#718792',
+                    primary: '#F26A4B',
+                    neutral0: '#FFFFFF'
                 }
             });
 
@@ -119,7 +117,7 @@ class FirstAuthenticationProf extends Component {
                     <form className="form-prof" onSubmit={this.handleSubmit}>
                         <h2>Mes informations</h2>
                         <div className="container-form">
-                            <label>Style(s) de yoga enseigné(s) :</label>
+                            <label>Style(s) de yoga enseigné(s)</label>
                             <div>
                                 <Select
                                     placeholder="Choisissez vos options"
@@ -131,7 +129,7 @@ class FirstAuthenticationProf extends Component {
                                     theme={multiSelectTheme}
                                 />
                             </div>
-                            <label>Années d'enseignement :</label>
+                            <label>Années d'enseignement</label>
                             <Select
                                 placeholder="Choisissez vos options"
                                 value={experience}
@@ -140,7 +138,7 @@ class FirstAuthenticationProf extends Component {
                                 styles={multiSelectStyle}
                                 theme={multiSelectTheme}
                             />
-                            <label>Langue(s) parlée(s) :</label>
+                            <label>Langue(s) parlée(s)</label>
                             <Select
                                 placeholder="Choisissez vos options"
                                 value={language}
@@ -152,18 +150,19 @@ class FirstAuthenticationProf extends Component {
                             />
                         </div>
                         <div className="container-form">
-                            <label>Instagram :</label>
+                            <label>Instagram</label>
                             <input value={instagram} onChange={this.handleChange} type="text"
                                    name="instagram" placeholder="@superprof"/>
-                            <label>Facebook :</label>
+                            <label>Facebook</label>
                             <input value={facebook} onChange={this.handleChange} type="text"
                                    name="facebook" placeholder="facebook.com/superprof"/>
-                            <label>Website :</label>
+                            <label>Website</label>
                             <input value={website} onChange={this.handleChange} type="text"
                                    name="website" placeholder="monsupersite.com"/>
                         </div>
                         <div className="container-form">
-                            <label>Descriptif :</label>
+                            <label>Présentation</label>
+                            <IconeInfo className="container-form--icone"/>
                             <textarea value={presentation} onChange={this.handleChange}
                                       name="presentation"/>
                         </div>
