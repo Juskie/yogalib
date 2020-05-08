@@ -7,14 +7,14 @@ import './signForm.scss';
 import './signUp.scss';
 import {Redirect} from "react-router-dom";
 
-import Image from '../../images/img_signup.jpg'
+// import Image from '../../images/img_signup.jpg'
 
 const validFormRegex = {
-    firstName: /[a-z\s.-]/i,
-    lastName: /[a-z\s.-]/i,
+    firstName: /[a-z\s.-]{1,30}$/i,
+    lastName: /[a-z\s.-]{1,30}$/i,
     email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-    password: '',
-    telephone: /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/g
+    password: /^[#\w@_$-]{8,20}$/i,
+    phone: /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/g
 };
 
 //S'inscrire
@@ -34,51 +34,52 @@ class SignUp extends Component {
             phone: '',
             password: '',
             confirmPassword: ''
-        }
+        },
+        submitPassword: ''
     };
 
     handleChange = event => {
+        event.preventDefault();
+
         const {name, value} = event.target;
         let errors = this.state.errors;
-
-        console.log(errors)
 
         switch (name) {
             case 'firstName':
                 errors.firstName =
                     validFormRegex.firstName.test(value)
-                        ? 'Full Name must be 5 characters long!'
-                        : '';
+                        ? ''
+                        : 'Prénom obligatoire';
                 break;
             case 'lastName':
                 errors.lastName =
                     validFormRegex.lastName.test(value)
-                        ? 'Full Name must be 5 characters long!'
-                        : '';
+                        ? ''
+                        : 'Nom obligatoire';
                 break;
             case 'email':
                 errors.email =
                     validFormRegex.email.test(value)
                         ? ''
-                        : 'Email is not valid!';
+                        : 'Email obligatoire';
                 break;
             case 'phone':
                 errors.phone =
                     validFormRegex.phone.test(value)
-                        ? 'Password must be 8 characters long!'
-                        : '';
+                        ? ''
+                        : 'Format du téléphone incorrect';
                 break;
             case 'password':
                 errors.password =
-                    value.length < 8
-                        ? 'Password must be 8 characters long!'
-                        : '';
+                    validFormRegex.password.test(value)
+                        ? ''
+                        : 'Mot de passe obligatoire';
                 break;
             case 'confirmPassword':
                 errors.confirmPassword =
-                    validFormRegex.phone.test(value)
-                        ? 'Password must be 8 characters long!'
-                        : '';
+                    value.length > 0
+                        ? ''
+                        : 'Confirmer votre Mot de Passe';
                 break;
             default:
                 break;
@@ -96,12 +97,7 @@ class SignUp extends Component {
         const {password, confirmPassword, firstName, lastName, email, phone} = this.state;
         let userInformations = {email, password, firstName, lastName, phone};
 
-        if (password !== confirmPassword) {
-            alert('Mot de passe invalide')
-        } else {
-            this.props.signUp(userInformations);//send informations for the new user
-        }
-
+        password !== confirmPassword ? this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'}) : this.props.signUp(userInformations); //send informations for the new user
 
         // const form = {...this.state};
 
@@ -119,7 +115,7 @@ class SignUp extends Component {
     render() {
 
         const {authError, auth} = this.props;
-        const {password, confirmPassword, firstName, lastName, email, phone, errors} = this.state;
+        const {password, confirmPassword, firstName, lastName, email, phone, errors, submitPassword} = this.state;
 
         if (auth.uid) {
             return <Redirect to='/dashboard'/>
@@ -128,34 +124,37 @@ class SignUp extends Component {
         return (
             <>
                 <section className="signUpContainer">
-                    <img src={Image} alt=""/>
                     <form className="form" onSubmit={this.handleSubmit}>
                         <h2>Créer mon compte Yogalib</h2>
                         <label>Prénom</label>
                         <input value={firstName} onChange={this.handleChange} type="text"
                                name="firstName" required/>
-                        {errors.firstName.length > 0 &&
-                        <span className='error'>{errors.firstName}</span>}
+                        {errors.firstName.length > 0 && <span className='error'>{errors.firstName}</span>}
                         <label>Nom</label>
                         <input value={lastName} onChange={this.handleChange} type="text"
                                name="lastName" required/>
+                        {errors.lastName.length > 0 && <span className='error'>{errors.lastName}</span>}
                         <label>Téléphone (Optionnel)</label>
                         <input value={phone} onChange={this.handleChange} type="text"
                                name="phone"/>
+                        {errors.phone.length > 0 && <span className='error'>{errors.phone}</span>}
                         <label>E-mail</label>
                         <input value={email} onChange={this.handleChange} type="email"
                                name="email" required/>
+                        {errors.email.length > 0 && <span className='error'>{errors.email}</span>}
                         <label>Mot de Passe</label>
                         <label>Minimum 6 caractères</label>
                         <input value={password} onChange={this.handleChange} type="password"
                                name="password" required/>
-                        <label>Confirmer votre Mot de Passe</label>
+                        {errors.password.length > 0 && <span className='error'>{errors.password}</span>}
+                        <label>Confirmer votre mot de passe</label>
                         <input value={confirmPassword} onChange={this.handleChange} type="password"
                                name="confirmPassword" required/>
-                        <button className="button-primary" type="submit">S'enregistrer</button>
-                        <div>
-                            {authError ? <p>{authError}</p> : null}
-                        </div>
+                        {errors.confirmPassword.length > 0 && <span className='error'>{errors.confirmPassword}</span>}
+                        {submitPassword ? <p>{submitPassword}</p> : null}
+                        <label><input type="checkbox" id="cgu"/>J'ai lu et j'accepte les CGU</label>
+                        <button className="button-primary" type="submit" value="true">S'enregistrer</button>
+                        {authError ? <p>{authError}</p> : null} {/*what is returned for AuthError ?*/}
                     </form>
                 </section>
             </>

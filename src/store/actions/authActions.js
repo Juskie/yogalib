@@ -1,6 +1,13 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
+import {startCase} from 'lodash';
+import {toLower} from 'lodash';
+
+const firstLetterCapitalize = (name) => {
+    return startCase(toLower(name));
+};
+
 
 export const signIn = credentials => {
   return (dispatch) => {
@@ -33,8 +40,8 @@ export const signUp = newUser => {
             newUser.password
         ).then(resp => {
             return firestore.collection('users').doc(resp.user.uid).set({
-                firstName: newUser.firstName,
-                lastName: newUser.lastName,
+                firstName: firstLetterCapitalize(newUser.firstName),
+                lastName: firstLetterCapitalize(newUser.lastName),
                 role: 'teacher',
                 phone: newUser.phone
             })
