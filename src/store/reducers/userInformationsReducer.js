@@ -1,6 +1,7 @@
 const initialState = {};
 
 const userFirstInformationsReducer = (state = initialState, action) => {
+    // eslint-disable-next-line default-case
     switch (action.type) {
         case 'ADD_FIRST_USER_INFORMATIONS':
             console.log('user informations success');

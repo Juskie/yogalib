@@ -7,7 +7,7 @@ const SignedInLinks = (props) => {
     return (
         <ul className="nav__link">
             <li><NavLink to='/'>Planning</NavLink></li>
-            <li><a onClick={props.signOut}>Se déconnecter</a></li>
+            <li><button onClick={props.signOut}>Se déconnecter</button></li>
         </ul>
     );
 };

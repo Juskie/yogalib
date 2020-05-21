@@ -21,19 +21,7 @@ class SignIn extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-
         this.props.signIn(this.state);
-
-        // const form = {...this.state};
-
-        //Reset Form
-        // Object.keys(form).forEach(input => {
-        //     form[input] = ''
-        // });
-        // this.setState({
-        //     ...form
-        // })
-
     };
 
 
@@ -57,7 +45,7 @@ class SignIn extends Component {
                         <input value={password} onChange={this.handleChange} type="password"
                                name="password" required/>
                         <button className="button-primary" type="submit">Se connecter</button>
-                        <a href="">Mot de passe oublié ?</a>
+                        <a href="/">Mot de passe oublié ?</a>
                         <div>
                             {authError ? <p>{authError}</p> : null}
                         </div>

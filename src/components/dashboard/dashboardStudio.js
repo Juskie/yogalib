@@ -1,5 +1,6 @@
 import React from 'react';
 import './dashboard.scss';
+import Invitation from "../userInformartions/invitation";
 
 const DashboardStudio = (props) => {
 
@@ -23,6 +24,7 @@ const DashboardStudio = (props) => {
                 <h3>Historique des recherches</h3>
                 <div></div>
             </section>
+            <Invitation/>
         </div>
     );
 };

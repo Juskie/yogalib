@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
-import firebase, {auth} from "firebase";
+import {auth} from "firebase";
+import firebase from "firebase/app";
 import {firebaseApp} from "../../config/base";
 import {connect} from 'react-redux';
 import {signUp} from '../../store/actions/authActions';
 import './signForm.scss';
 import './signUp.scss';
 import {Redirect} from "react-router-dom";
+import {startCase} from 'lodash';
+import {toLower} from 'lodash';
+
+const firstLetterCapitalize = (name) => {
+    return startCase(toLower(name));
+};
 
 // import Image from '../../images/img_signup.jpg'
 
 const validFormRegex = {
     firstName: /[a-z\s.-]{1,30}$/i,
     lastName: /[a-z\s.-]{1,30}$/i,
-    email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+    email: /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
     password: /^[#\w@_$-]{8,20}$/i,
     phone: /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/g
 };
@@ -95,19 +102,22 @@ class SignUp extends Component {
         event.preventDefault();
 
         const {password, confirmPassword, firstName, lastName, email, phone} = this.state;
-        let userInformations = {email, password, firstName, lastName, phone};
+        // let userInformations = {email, password, firstName, lastName, phone};
 
-        password !== confirmPassword ? this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'}) : this.props.signUp(userInformations); //send informations for the new user
+        const newUserSignUp  = firebase.functions().httpsCallable('newUserSignUp');
 
+        newUserSignUp ({
+            email: email.toLowerCase(),
+            password: password,
+            firstName: firstLetterCapitalize(firstName),
+            lastName: firstLetterCapitalize(lastName),
+            phone: phone
+        }).catch( error => {
+            console.log(error);
+        })
+
+        // password !== confirmPassword ? this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'}) : this.props.signUp(userInformations); //send informations for the new user
         // const form = {...this.state};
-
-        //Reset Form
-        // Object.keys(form).forEach(input => {
-        //     form[input] = ''
-        // });
-        // this.setState({
-        //     ...form
-        // })
 
     };
 
@@ -153,8 +163,9 @@ class SignUp extends Component {
                         {errors.confirmPassword.length > 0 && <span className='error'>{errors.confirmPassword}</span>}
                         {submitPassword ? <p>{submitPassword}</p> : null}
                         <label><input type="checkbox" id="cgu"/>J'ai lu et j'accepte les CGU</label>
+                        {authError ? <p>{authError}</p> : null}
                         <button className="button-primary" type="submit" value="true">S'enregistrer</button>
-                        {authError ? <p>{authError}</p> : null} {/*what is returned for AuthError ?*/}
+                         {/*what is returned for AuthError ?*/}
                     </form>
                 </section>
             </>
@@ -166,7 +177,8 @@ class SignUp extends Component {
 
 const mapStateToProps = state => {
     return {
-        auth: state.firebase.auth
+        auth: state.firebase.auth,
+        authError: state.auth.authError
     }
 };
 

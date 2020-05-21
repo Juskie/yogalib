@@ -1,10 +1,9 @@
 export const addFirstUserInformations = (informations) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firestore = getFirestore();
-        const profile = getState().firebase.profile;
+        // const profile = getState().firebase.profile;
         const userId = getState().firebase.auth.uid;
 
-        console.log(informations);
         firestore.collection('users').doc(userId).update({
             ...informations,
             yogaStyle: informations.yogaStyle && Object.keys(informations.yogaStyle).map( (key) => {
