@@ -3,22 +3,22 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 
-const passwordEmail = process.env.PASSWORD_EMAIL;
-
 admin.initializeApp();
-
+require('dotenv').config();
 
 const sha1 = (email) => {
     return crypto.createHash('sha1').update(email).digest('hex');
 }
+
+const {AUTH_USER, AUTH_PASSWORD} = process.env;
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
     auth: {
-        user: 'camille.maisonobe@gmail.com',
-        pass: passwordEmail
+        user: AUTH_USER,
+        pass: AUTH_PASSWORD
     }
 });
 
@@ -50,49 +50,34 @@ exports.sendMailInvitation = functions.https.onCall((data, context) => {
 
 exports.newUserSignUp = functions.https.onCall(async (data, context) => {
 
-    const email = admin.firestore().collection('invitations').where('email', '==', data.email);
+    const email = admin.firestore().collection('invitations').where('email', '==', data.email).limit(1);
 
     const snapshot = await email.get();
-    // if (snapshot.empty) {
-    //     console.log('No matching documents.');
-    // }
-    for await (const doc of snapshot) {
+
+    if (snapshot.empty) {
+        console.log('No matching documents.');
+    }
+
+    const promises = [];
+
+    snapshot.forEach( doc => {
         const token = sha1(data.email);
         const newUserInvitation = doc.data();
 
         if (newUserInvitation.hash === token) {
-            await admin.auth().createUser({
+            promises.push(admin.auth().createUser({
                 uid: doc.id,
                 email: data.email,
                 password: data.password
-            })
-            await admin.firestore().collection('users').doc(doc.id).set({
+            }))
+            promises.push(admin.firestore().collection('users').doc(doc.id).set({
                 firstName: data.firstName,
                 lastName: data.lastName,
                 role: 'teacher',
                 phone: data.phone
-            })
+            }))
         }
-    }
-    // return snapshot.forEach(doc => {
-    //
-    //     const token = sha1(data.email);
-    //     const newUserInvitation = doc.data();
-    //     const userInformations = admin.firestore().collection('users').doc(doc.id);
-    //
-    //     if (newUserInvitation.hash === token) {
-    //         return admin.auth().createUser({
-    //             uid: doc.id,
-    //             email: data.email,
-    //             password: data.password
-    //         }).then(() => {
-    //             return userInformations.set({
-    //                 firstName: data.firstName,
-    //                 lastName: data.lastName,
-    //                 role: 'teacher',
-    //                 phone: data.phone
-    //             })
-    //         })
-    //     }
-    // });
+    })
+
+    await Promise.all(promises);
 });
