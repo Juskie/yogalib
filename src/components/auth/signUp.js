@@ -102,23 +102,22 @@ class SignUp extends Component {
         event.preventDefault();
 
         const {password, confirmPassword, firstName, lastName, email, phone} = this.state;
-        // let userInformations = {email, password, firstName, lastName, phone};
+        const newUserSignUp = firebase.functions().httpsCallable('newUserSignUp');
 
-        const newUserSignUp  = firebase.functions().httpsCallable('newUserSignUp');
-
-        newUserSignUp ({
-            email: email.toLowerCase(),
-            password: password,
-            firstName: firstLetterCapitalize(firstName),
-            lastName: firstLetterCapitalize(lastName),
-            phone: phone
-        }).catch( error => {
-            console.log(error);
-        })
+        password !== confirmPassword ?
+            this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'})
+            : newUserSignUp({
+                email: email.toLowerCase(),
+                password: password,
+                firstName: firstLetterCapitalize(firstName),
+                lastName: firstLetterCapitalize(lastName),
+                phone: phone
+            }).catch(error => {
+                console.log(error);
+            });
 
         // password !== confirmPassword ? this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'}) : this.props.signUp(userInformations); //send informations for the new user
         // const form = {...this.state};
-
     };
 
 
@@ -165,12 +164,9 @@ class SignUp extends Component {
                         <label><input type="checkbox" id="cgu"/>J'ai lu et j'accepte les CGU</label>
                         {authError ? <p>{authError}</p> : null}
                         <button className="button-primary" type="submit" value="true">S'enregistrer</button>
-                         {/*what is returned for AuthError ?*/}
                     </form>
                 </section>
             </>
-
-
         );
     }
 }
@@ -184,9 +180,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: (newUser) => {
-            dispatch(signUp(newUser))
-        }
+        // signUp: (newUser) => {
+        //     dispatch(signUp(newUser))
+        // }
     }
 };
 

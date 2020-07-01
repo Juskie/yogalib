@@ -4,9 +4,9 @@ import "firebase/auth";
 import {startCase} from 'lodash';
 import {toLower} from 'lodash';
 
-const firstLetterCapitalize = (name) => {
-    return startCase(toLower(name));
-};
+// const firstLetterCapitalize = (name) => {
+//     return startCase(toLower(name));
+// };
 
 
 export const signIn = credentials => {
@@ -30,25 +30,25 @@ export const signOut = () => {
     }
 };
 
-export const signUp = newUser => {
-    return (dispatch, getState, {getFirebase, getFirestore}) => {
-        const firebase = getFirebase();
-        const firestore = getFirestore();
-
-        firebase.auth().createUserWithEmailAndPassword(
-            newUser.email.toLowerCase(),
-            newUser.password
-        ).then(resp => {
-            return firestore.collection('users').doc(resp.user.uid).set({
-                firstName: firstLetterCapitalize(newUser.firstName),
-                lastName: firstLetterCapitalize(newUser.lastName),
-                role: 'teacher',
-                phone: newUser.phone
-            })
-        }).then( () => {
-            dispatch({ type: 'SIGNUP_SUCCESS'});
-        }).catch(err => {
-            dispatch({ type: 'SIGNUP_ERROR', err})
-        })
-    }
-};
+// export const signUp = newUser => {
+//     return (dispatch, getState, {getFirebase, getFirestore}) => {
+//         const firebase = getFirebase();
+//         const firestore = getFirestore();
+//
+//         firebase.auth().createUserWithEmailAndPassword(
+//             newUser.email.toLowerCase(),
+//             newUser.password
+//         ).then(resp => {
+//             return firestore.collection('users').doc(resp.user.uid).set({
+//                 firstName: firstLetterCapitalize(newUser.firstName),
+//                 lastName: firstLetterCapitalize(newUser.lastName),
+//                 role: 'teacher',
+//                 phone: newUser.phone
+//             })
+//         }).then( () => {
+//             dispatch({ type: 'SIGNUP_SUCCESS'});
+//         }).catch(err => {
+//             dispatch({ type: 'SIGNUP_ERROR', err})
+//         })
+//     }
+// };
