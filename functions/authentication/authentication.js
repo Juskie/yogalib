@@ -48,7 +48,37 @@ exports.sendMailInvitation = functions.https.onCall((data, context) => {
     })
 });
 
+exports.sendMailConfirmation = functions.https.onCall((data, context) => {
+
+        const mailOptions = {
+            from: `camille.maisonobe@gmail.com`,
+            to: data.email,
+            subject: 'Confirmation de votre inscription sur Yogalib',
+            html: `<h1>Merci pour votre inscription !</h1>
+                            <p>
+                               <b>Trop cool !</a><br>
+                            </p>`
+        };
+
+        return transporter.sendMail(mailOptions, (error, data) => {
+            if (error) {
+                console.log(error)
+                return;
+            }
+            console.log("Sent!")
+        });
+});
+
 exports.newUserSignUp = functions.https.onCall(async (data, context) => {
+
+    const checkEmail = await admin.firestore().collection("users").doc(data.email).get();
+
+    if (checkEmail.exists) {
+        throw new functions.https.HttpsError(
+            'already-exists',
+            'Le mail possède déjà un compte sur la plateforme.'
+        );
+    }
 
     const email = admin.firestore().collection('invitations').where('email', '==', data.email).limit(1);
 
@@ -56,6 +86,10 @@ exports.newUserSignUp = functions.https.onCall(async (data, context) => {
 
     if (snapshot.empty) {
         console.log('No matching documents.');
+        throw new functions.https.HttpsError(
+            'failed-precondition',
+            'Aucun mail d\'invitation trouvé avec ce mail.'
+        );
     }
 
     const promises = [];
@@ -87,11 +121,12 @@ exports.checkUserEmail = functions.https.onCall(async (data, context) => {
     const checkEmail = await admin.firestore().collection("invitations").doc(data.email).get();
 
     if (checkEmail.exists) {
-        return data.email;
+        throw new functions.https.HttpsError(
+            'already-exists',
+            'Le mail utilisé a déjà reçu une invitation.'
+        );
     } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-        return null
+        return data.email;
     }
 
 });

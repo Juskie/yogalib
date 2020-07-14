@@ -3,7 +3,7 @@ import {auth} from "firebase";
 import firebase from "firebase/app";
 import {firebaseApp} from "../../config/base";
 import {connect} from 'react-redux';
-import {signUp} from '../../store/actions/authActions';
+import {signIn, signUp} from '../../store/actions/authActions';
 import './signForm.scss';
 import './signUp.scss';
 import {Redirect} from "react-router-dom";
@@ -16,7 +16,7 @@ const firstLetterCapitalize = (name) => {
 
 // import Image from '../../images/img_signup.jpg'
 
-const validFormRegex = {
+const validFormErrorRegex = {
     firstName: /[a-z\s.-]{1,30}$/i,
     lastName: /[a-z\s.-]{1,30}$/i,
     email: /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
@@ -42,7 +42,8 @@ class SignUp extends Component {
             password: '',
             confirmPassword: ''
         },
-        submitPassword: ''
+        submitPassword: '',
+        validFormError: ''
     };
 
     handleChange = event => {
@@ -54,31 +55,31 @@ class SignUp extends Component {
         switch (name) {
             case 'firstName':
                 errors.firstName =
-                    validFormRegex.firstName.test(value)
+                    validFormErrorRegex.firstName.test(value)
                         ? ''
                         : 'Prénom obligatoire';
                 break;
             case 'lastName':
                 errors.lastName =
-                    validFormRegex.lastName.test(value)
+                    validFormErrorRegex.lastName.test(value)
                         ? ''
                         : 'Nom obligatoire';
                 break;
             case 'email':
                 errors.email =
-                    validFormRegex.email.test(value)
+                    validFormErrorRegex.email.test(value)
                         ? ''
                         : 'Email obligatoire';
                 break;
             case 'phone':
                 errors.phone =
-                    validFormRegex.phone.test(value)
+                    validFormErrorRegex.phone.test(value)
                         ? ''
                         : 'Format du téléphone incorrect';
                 break;
             case 'password':
                 errors.password =
-                    validFormRegex.password.test(value)
+                    validFormErrorRegex.password.test(value)
                         ? ''
                         : 'Mot de passe obligatoire';
                 break;
@@ -98,33 +99,41 @@ class SignUp extends Component {
         });
     };
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
 
         const {password, confirmPassword, firstName, lastName, email, phone} = this.state;
-        const newUserSignUp = firebase.functions().httpsCallable('newUserSignUp');
+        const newUserSignUp = firebase.functions().httpsCallable('authentication-newUserSignUp');
+        const sendMailConfirmation = firebase.functions().httpsCallable('authentication-sendMailConfirmation');
 
-        password !== confirmPassword ?
-            this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'})
-            : newUserSignUp({
-                email: email.toLowerCase(),
-                password: password,
-                firstName: firstLetterCapitalize(firstName),
-                lastName: firstLetterCapitalize(lastName),
-                phone: phone
-            }).catch(error => {
-                console.log(error);
+        try {
+            password !== confirmPassword ?
+                this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'})
+                : await newUserSignUp({
+                    email: email.toLowerCase(),
+                    password: password,
+                    firstName: firstLetterCapitalize(firstName),
+                    lastName: firstLetterCapitalize(lastName),
+                    phone: phone
+                });
+
+            await sendMailConfirmation({
+                email: this.state.email
             });
 
-        // password !== confirmPassword ? this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'}) : this.props.signUp(userInformations); //send informations for the new user
-        // const form = {...this.state};
-    };
-
+        } catch (error) {
+            this.setState({
+                validFormError: error.message
+            })
+            console.log(error.message);
+        }
+        this.props.signIn({email: email, password: password});
+    }
 
     render() {
 
         const {authError, auth} = this.props;
-        const {password, confirmPassword, firstName, lastName, email, phone, errors, submitPassword} = this.state;
+        const {password, confirmPassword, firstName, lastName, email, phone, errors, submitPassword, validFormError} = this.state;
 
         if (auth.uid) {
             return <Redirect to='/dashboard'/>
@@ -163,6 +172,7 @@ class SignUp extends Component {
                         {submitPassword ? <p>{submitPassword}</p> : null}
                         <label><input type="checkbox" id="cgu"/>J'ai lu et j'accepte les CGU</label>
                         {authError ? <p>{authError}</p> : null}
+                        {validFormError.length > 0 && <span className='error'>{validFormError}</span>}
                         <button className="button-primary" type="submit" value="true">S'enregistrer</button>
                     </form>
                 </section>
@@ -183,6 +193,9 @@ const mapDispatchToProps = dispatch => {
         // signUp: (newUser) => {
         //     dispatch(signUp(newUser))
         // }
+        signIn: (credentials) => {
+            dispatch(signIn(credentials))
+        }
     }
 };
 

@@ -14,6 +14,7 @@ class Invitation extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
+        this.setState({emailError: ''})
         const sendMailInvitation = firebase.functions().httpsCallable('authentication-sendMailInvitation');
         const checkUserEmail = firebase.functions().httpsCallable('authentication-checkUserEmail');
         const isEmail = /^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
@@ -21,21 +22,17 @@ class Invitation extends Component {
         if (isEmail.test(this.state.email)) {
             const emailInvitation = await checkUserEmail({
                 email: this.state.email
-            });
-            console.log(emailInvitation.data);
-            if (!emailInvitation.data) {
-                sendMailInvitation({
-                    email: this.state.email
-                }).then(() => {
-                    this.setState({
-                        email: '',
-                        validForm: 'Invitation envoyée !'
-                    })
-                }).catch( error => {
-                    console.log(error);
-                })
-            }
-        } else {
+            }).catch( error => {
+                this.setState({
+                    emailError: error.message
+                });
+            })
+            if (emailInvitation?.data) {
+                await sendMailInvitation({email: this.state.email});
+                this.setState({
+                    email: '', validForm: 'Invitation envoyée !'});
+                }
+            } else {
             this.setState({emailError: 'L\'adresse email est invalide.'});
           }
     }
