@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {signIn, signUp} from '../../store/actions/authActions';
 import './signForm.scss';
 import './signUp.scss';
+import LoadingButton from "../layout/loadingButton";
 import {Redirect} from "react-router-dom";
 import {startCase} from 'lodash';
 import {toLower} from 'lodash';
@@ -13,8 +14,6 @@ import {toLower} from 'lodash';
 const firstLetterCapitalize = (name) => {
     return startCase(toLower(name));
 };
-
-// import Image from '../../images/img_signup.jpg'
 
 const validFormErrorRegex = {
     firstName: /[a-z\s.-]{1,30}$/i,
@@ -43,7 +42,8 @@ class SignUp extends Component {
             confirmPassword: ''
         },
         submitPassword: '',
-        validFormError: ''
+        validFormError: '',
+        loading: false
     };
 
     handleChange = event => {
@@ -107,6 +107,9 @@ class SignUp extends Component {
         const sendMailConfirmation = firebase.functions().httpsCallable('authentication-sendMailConfirmation');
 
         try {
+            this.setState({
+                loading: true
+            });
             password !== confirmPassword ?
                 this.setState({submitPassword: 'Les mots de passe ne correspondent pas.'})
                 : await newUserSignUp({
@@ -121,13 +124,18 @@ class SignUp extends Component {
                 email: this.state.email
             });
 
+            this.props.signIn({email: email, password: password});
+            this.setState({
+                loading: false
+            })
+
         } catch (error) {
             this.setState({
-                validFormError: error.message
+                validFormError: error.message,
+                loading: false
             })
             console.log(error.message);
         }
-        this.props.signIn({email: email, password: password});
     }
 
     render() {
@@ -173,7 +181,7 @@ class SignUp extends Component {
                         <label><input type="checkbox" id="cgu"/>J'ai lu et j'accepte les CGU</label>
                         {authError ? <p>{authError}</p> : null}
                         {validFormError.length > 0 && <span className='error'>{validFormError}</span>}
-                        <button className="button-primary" type="submit" value="true">S'enregistrer</button>
+                        <LoadingButton loading={this.state.loading}>S'enregistrer</LoadingButton>
                     </form>
                 </section>
             </>

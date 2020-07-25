@@ -1,14 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import {startCase} from 'lodash';
-import {toLower} from 'lodash';
-
-// const firstLetterCapitalize = (name) => {
-//     return startCase(toLower(name));
-// };
-
-
 export const signIn = credentials => {
   return (dispatch) => {
      firebase.auth().signInWithEmailAndPassword(

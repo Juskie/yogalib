@@ -6,6 +6,7 @@ import OptionsExperience from '../../data/optionsExperience';
 import OptionsLanguage from '../../data/optionsLanguage';
 import {ReactComponent as IconeInfo} from "../../images/informations.svg"
 import './firstForm.scss';
+import {ImageUpload} from './imageUpload';
 
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
@@ -24,7 +25,6 @@ class FirstAuthenticationProf extends Component {
         facebook: '',
         website: '',
         presentation: '',
-        image: ''
     };
 
     renderRedirect = () => {
@@ -47,7 +47,6 @@ class FirstAuthenticationProf extends Component {
         });
 
         if (value === null || value.length <= 0) {
-            console.log('je maffiche !');
             this.setState({
                 error: 'Veuillez remplir les champs obligatoires pour valider le formulaire.'
             })
@@ -58,16 +57,16 @@ class FirstAuthenticationProf extends Component {
         }
 
         console.log(value);
-        const {yogaStyle, experience, language, instagram, facebook, website, presentation, image} = this.state;
-        let userInformations = {yogaStyle, experience, language, instagram, facebook, website, presentation, image};
+        const {yogaStyle, experience, language, instagram, facebook, website, presentation} = this.state;
+        let userInformations = {yogaStyle, experience, language, instagram, facebook, website, presentation};
         console.log(userInformations);
     };
 
     handleSubmit = event => {
         event.preventDefault();
 
-        const {yogaStyle, experience, language, instagram, facebook, website, presentation, image} = this.state;
-        let userInformations = {yogaStyle, experience, language, instagram, facebook, website, presentation, image};
+        const {yogaStyle, experience, language, instagram, facebook, website, presentation} = this.state;
+        let userInformations = {yogaStyle, experience, language, instagram, facebook, website, presentation};
 
         if (this.state.error === null) {
 
@@ -85,7 +84,7 @@ class FirstAuthenticationProf extends Component {
         const optionsExperience = OptionsExperience.optionsExperience;
         const optionsLanguage = OptionsLanguage.optionsLanguage;
 
-        const {yogaStyle, experience, language, instagram, facebook, website, presentation, error, image} = this.state;
+        const {yogaStyle, experience, language, instagram, facebook, website, presentation, error} = this.state;
 
         const multiSelectStyle = {
             control: (styles) => ({
@@ -114,6 +113,7 @@ class FirstAuthenticationProf extends Component {
         return (
             <>
                 <section className="container">
+                    <ImageUpload path='professeurs'/>
                     <form className="form-prof" onSubmit={this.handleSubmit}>
                         <h2>Mes informations</h2>
                         <div className="container-form">

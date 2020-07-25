@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {signIn} from "../../store/actions/authActions";
+import LoadingButton from "../layout/loadingButton";
 import './signForm.scss';
 
 //Se connecter
@@ -9,6 +10,7 @@ class SignIn extends Component {
     state = {
         email: '',
         password: '',
+        loading: false
     };
 
     handleChange = event => {
@@ -19,9 +21,11 @@ class SignIn extends Component {
         });
     };
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
-        this.props.signIn(this.state);
+        this.setState({loading: true});
+        await this.props.signIn(this.state);
+        this.setState({loading: false});
     };
 
 
@@ -44,7 +48,7 @@ class SignIn extends Component {
                         <label>Mot de Passe</label>
                         <input value={password} onChange={this.handleChange} type="password"
                                name="password" required/>
-                        <button className="button-primary" type="submit">Se connecter</button>
+                        <LoadingButton loading={this.state.loading}>Se connecter</LoadingButton>
                         <a href="/">Mot de passe oublié ?</a>
                         <div>
                             {authError ? <p>{authError}</p> : null}
