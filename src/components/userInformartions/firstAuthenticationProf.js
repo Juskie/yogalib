@@ -6,7 +6,7 @@ import OptionsExperience from '../../data/optionsExperience';
 import OptionsLanguage from '../../data/optionsLanguage';
 import {ReactComponent as IconeInfo} from "../../images/informations.svg"
 import './firstForm.scss';
-import {ImageUpload} from './imageUpload';
+import ImageUpload from './imageUpload';
 
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
