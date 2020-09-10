@@ -7,7 +7,8 @@ import './dashboard.scss';
 class Dashboard extends Component {
 
     render() {
-        const Dashboard = this.props.profile.role === 'teacher' ? <DashboardProf profile={this.props.profile}/> : <DashboardStudio profile={this.props.profile}/>;
+        const Dashboard = this.props.profile.role === 'teacher' ? <DashboardProf profile={this.props.profile}/> :
+            <DashboardStudio profile={this.props.profile}/>;
 
         return (
             <div className="">
@@ -20,7 +21,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
     return {
         profile: state.firebase.profile,
-    }
+    };
 };
 
 export default connect(mapStateToProps)(Dashboard);

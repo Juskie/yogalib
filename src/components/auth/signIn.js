@@ -23,6 +23,7 @@ class SignIn extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
+
         this.setState({loading: true});
         await this.props.signIn(this.state);
         this.setState({loading: false});
@@ -30,7 +31,6 @@ class SignIn extends Component {
 
 
     render() {
-
         const {authError, auth} = this.props;
         const {email, password} = this.state;
 

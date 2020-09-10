@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {auth} from "firebase";
 import firebase from "firebase/app";
 import {firebaseApp} from "../../config/base";
 import {connect} from 'react-redux';
-import {signIn, signUp} from '../../store/actions/authActions';
+import {signIn} from '../../store/actions/authActions';
 import './signForm.scss';
 import './signUp.scss';
 import LoadingButton from "../layout/loadingButton";
@@ -47,8 +46,6 @@ class SignUp extends Component {
     };
 
     handleChange = event => {
-        event.preventDefault();
-
         const {name, value} = event.target;
         let errors = this.state.errors;
 
@@ -103,8 +100,8 @@ class SignUp extends Component {
         event.preventDefault();
 
         const {password, confirmPassword, firstName, lastName, email, phone} = this.state;
-        const newUserSignUp = firebase.functions().httpsCallable('authentication-newUserSignUp');
-        const sendMailConfirmation = firebase.functions().httpsCallable('authentication-sendMailConfirmation');
+        const newUserSignUp = firebase.functions().httpsCallable('newUserSignUp');
+        const sendMailConfirmation = firebase.functions().httpsCallable('sendMailConfirmation');
 
         try {
             this.setState({
@@ -139,7 +136,6 @@ class SignUp extends Component {
     }
 
     render() {
-
         const {authError, auth} = this.props;
         const {password, confirmPassword, firstName, lastName, email, phone, errors, submitPassword, validFormError} = this.state;
 
@@ -198,9 +194,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // signUp: (newUser) => {
-        //     dispatch(signUp(newUser))
-        // }
         signIn: (credentials) => {
             dispatch(signIn(credentials))
         }

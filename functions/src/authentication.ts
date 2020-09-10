@@ -1,28 +1,25 @@
-const functions = require('firebase-functions');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const admin = require('firebase-admin');
+import * as functions from 'firebase-functions';
+import * as crypto from 'crypto';
+import * as nodemailer from 'nodemailer';
+import * as admin from 'firebase-admin';
 
 admin.initializeApp();
-require('dotenv').config();
 
-const sha1 = (email) => {
+const sha1 = (email: string) => {
     return crypto.createHash('sha1').update(email).digest('hex');
 }
-
-const {AUTH_USER, AUTH_PASSWORD} = process.env;
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
     auth: {
-        user: AUTH_USER,
-        pass: AUTH_PASSWORD
+        user: functions.config().auth.user,
+        pass: functions.config().auth.password
     }
 });
 
-exports.sendMailInvitation = functions.https.onCall((data, context) => {
+export const sendMailInvitation = functions.https.onCall((data: {email: string}) => {
 
     return admin.firestore().collection('invitations').doc(data.email).set({
         email: data.email,
@@ -38,38 +35,44 @@ exports.sendMailInvitation = functions.https.onCall((data, context) => {
                             </p>`
         };
 
-        return transporter.sendMail(mailOptions, (error, data) => {
-            if (error) {
-                console.log(error)
-                return
-            }
-            console.log("Sent!")
-        });
+        return new Promise( (resolve, reject) => {
+            transporter.sendMail(mailOptions, (error) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve();
+                }
+            });
+        }).catch(error => {
+            throw new functions.https.HttpsError(
+                'failed-precondition',
+                `${error}`
+            );
+        })
+
     })
 });
 
-exports.sendMailConfirmation = functions.https.onCall((data, context) => {
+export const sendMailConfirmation = functions.https.onCall((data: {email: string}) => {
 
-        const mailOptions = {
-            from: `camille.maisonobe@gmail.com`,
-            to: data.email,
-            subject: 'Confirmation de votre inscription sur Yogalib',
-            html: `<h1>Merci pour votre inscription !</h1>
+    const mailOptions = {
+        from: `camille.maisonobe@gmail.com`,
+        to: data.email,
+        subject: 'Confirmation de votre inscription sur Yogalib',
+        html: `<h1>Merci pour votre inscription !</h1>
                             <p>
                                <b>Trop cool !</a><br>
                             </p>`
-        };
+    };
 
-        return transporter.sendMail(mailOptions, (error, data) => {
-            if (error) {
-                console.log(error)
-                return;
-            }
-            console.log("Sent!")
-        });
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) {return;}
+        console.log("Sent!")
+    });
+    return;
 });
 
-exports.newUserSignUp = functions.https.onCall(async (data, context) => {
+export const newUserSignUp = functions.https.onCall(async (data: {email: string, password: string, firstName: string, lastName: string, phone: number}) => {
 
     const checkEmail = await admin.firestore().collection("users").doc(data.email).get();
 
@@ -88,11 +91,11 @@ exports.newUserSignUp = functions.https.onCall(async (data, context) => {
         console.log('No matching documents.');
         throw new functions.https.HttpsError(
             'failed-precondition',
-            'Aucun mail d\'invitation trouvé avec ce mail.'
+            'Aucun mail d\'invitation n\'a été trouvé avec ce mail.'
         );
     }
 
-    const promises = [];
+    const promises: Promise<object>[] = [];
 
     snapshot.forEach(doc => {
         const token = sha1(data.email);
@@ -116,7 +119,7 @@ exports.newUserSignUp = functions.https.onCall(async (data, context) => {
     await Promise.all(promises);
 });
 
-exports.checkUserEmail = functions.https.onCall(async (data, context) => {
+export const checkUserEmail = functions.https.onCall(async (data: {email: string}) => {
 
     const checkEmail = await admin.firestore().collection("invitations").doc(data.email).get();
 
