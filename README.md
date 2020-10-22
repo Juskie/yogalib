@@ -5,6 +5,7 @@ Création d'un annuaire en ligne répertoriant les professeurs de yoga à Paris,
 - React.js
 - Redux
 - Firebase (with Firestore & Functions)
+- TypeScript
 
 ## :hammer: Installation
 Télécharger le projet et installer les modules avec la commande `npm install` dans le dossier du projet.
