@@ -5,6 +5,14 @@ import DashboardStudio from "./dashboardStudio";
 import "./dashboard.scss";
 
 class Dashboard extends Component {
+	// FIXME : Aie aie une variable avec une majuscule et qui porte le nom de la classe :\
+	// render() {
+	// 	return this.props.profile.role === "teacher" ? (
+	// 		<DashboardProf profile={this.props.profile} />
+	// 	) : (
+	// 		<DashboardStudio profile={this.props.profile} />
+	// 	);
+	// }
 	render() {
 		const Dashboard =
 			this.props.profile.role === "teacher" ? (
